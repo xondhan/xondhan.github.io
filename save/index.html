@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeneraTe TxT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 15px;
+        }
+
+        h3 {
+            text-align: center;
+            color: green;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            margin-top: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            display: block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h3>SIMPLEST TEXT MAKER</h3>
+    <textarea id="txtContent" placeholder="Type here..."></textarea>
+    <button onclick="saveFile()">Save Now</button>
+
+    <script>
+        function saveFile() {
+            var content = document.getElementById("txtContent").value;
+            var blob = new Blob([content], { type: "text/plain" });
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "CreaTed.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
+</html>

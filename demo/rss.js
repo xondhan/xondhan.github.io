@@ -10,7 +10,7 @@ function fetchRSS() {
             const rssFeed = document.getElementById('rss-feed');
 
             
-            const limitedItems = Array.from(items).slice(0, 3);
+            const limitedItems = Array.from(items).slice(0, 13);
 
             limitedItems.forEach(item => {
                 const title = item.querySelector('title').textContent;

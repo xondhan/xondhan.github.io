@@ -1,5 +1,5 @@
 function fetchRSS() {
-    const rssFeedUrl = "https://in.news.yahoo.com/rss";
+    const rssFeedUrl = "http://feeds.reuters.com/Reuters/worldNews";
 
     fetch(rssFeedUrl)
         .then(response => response.text())
@@ -10,7 +10,7 @@ function fetchRSS() {
             const rssFeed = document.getElementById('rss-feed');
 
             
-            const limitedItems = Array.from(items).slice(0, 17);
+            const limitedItems = Array.from(items).slice(0, 3);
 
             limitedItems.forEach(item => {
                 const title = item.querySelector('title').textContent;

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COPY</title>
+<style>
+    body {
+        margin: 17px;
+        text-align: center;
+    }
+
+    .copyText {
+        cursor: pointer;
+        color: blue;
+        margin: 17px;
+    }
+</style>
+</head>
+<body>
+
+<span id="copyText1" class="copyText">W3</span>
+<span id="copyText2" class="copyText">GAMMA</span>
+<span id="copyText3" class="copyText">STATIC</span>
+<br><br><br>
+<span id="copyText4" class="copyText">EMAIL4</span>
+<span id="copyText5" class="copyText">EMAIL5</span>
+<span id="copyText6" class="copyText">EMAIL6</span>
+<br><br><br>
+<span id="copyText7" class="copyText">EMAIL7</span>
+<span id="copyText8" class="copyText">EMAIL8</span>
+<span id="copyText9" class="copyText">EMAIL9</span>
+<br><br><br>
+<span id="copyText10" class="copyText">EMAIL10</span>
+<span id="copyText11" class="copyText">EMAIL11</span>
+<span id="copyText12" class="copyText">EMAIL12</span>
+<br><br><br>
+<span id="copyText13" class="copyText">EMAIL13</span>
+<span id="copyText14" class="copyText">EMAIL14</span>
+<span id="copyText15" class="copyText">EMAIL15</span>
+
+<span id="hiddenText1" style="display: none;">ginite8662@iliken.comA</span>
+<span id="hiddenText2" style="display: none;">satoge5873@rencr.comA</span>
+<span id="hiddenText3" style="display: none;">fojacel809@rencr.comA</span>
+<span id="hiddenText4" style="display: none;">example2@example.com</span>
+<span id="hiddenText5" style="display: none;">example3@example.com</span>
+<span id="hiddenText6" style="display: none;">example4@example.com</span>
+<span id="hiddenText7" style="display: none;">example5@example.com</span>
+<span id="hiddenText8" style="display: none;">example6@example.com</span>
+<span id="hiddenText9" style="display: none;">example7@example.com</span>
+<span id="hiddenText10" style="display: none;">example8@example.com</span>
+<span id="hiddenText11" style="display: none;">example9@example.com</span>
+<span id="hiddenText12" style="display: none;">example10@example.com</span>
+<span id="hiddenText13" style="display: none;">example11@example.com</span>
+<span id="hiddenText14" style="display: none;">example12@example.com</span>
+<span id="hiddenText15" style="display: none;">example13@example.com</span>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var copyText1 = document.getElementById('copyText1');
+    var hiddenText1 = document.getElementById('hiddenText1');
+    var copyText2 = document.getElementById('copyText2');
+    var hiddenText2 = document.getElementById('hiddenText2');
+    var copyText3 = document.getElementById('copyText3');
+    var hiddenText3 = document.getElementById('hiddenText3');
+    var copyText4 = document.getElementById('copyText4');
+    var hiddenText4 = document.getElementById('hiddenText4');
+    var copyText5 = document.getElementById('copyText5');
+    var hiddenText5 = document.getElementById('hiddenText5');
+    var copyText6 = document.getElementById('copyText6');
+    var hiddenText6 = document.getElementById('hiddenText6');
+    var copyText7 = document.getElementById('copyText7');
+    var hiddenText7 = document.getElementById('hiddenText7');
+    var copyText8 = document.getElementById('copyText8');
+    var hiddenText8 = document.getElementById('hiddenText8');
+    var copyText9 = document.getElementById('copyText9');
+    var hiddenText9 = document.getElementById('hiddenText9');
+    var copyText10 = document.getElementById('copyText10');
+    var hiddenText10 = document.getElementById('hiddenText10');
+    var copyText11 = document.getElementById('copyText11');
+    var hiddenText11 = document.getElementById('hiddenText11');
+    var copyText12 = document.getElementById('copyText12');
+    var hiddenText12 = document.getElementById('hiddenText12');
+    var copyText13 = document.getElementById('copyText13');
+    var hiddenText13 = document.getElementById('hiddenText13');
+    var copyText14 = document.getElementById('copyText14');
+    var hiddenText14 = document.getElementById('hiddenText14');
+    var copyText15 = document.getElementById('copyText15');
+    var hiddenText15 = document.getElementById('hiddenText15');
+
+    function copyText(copyText, hiddenText) {
+        var tempTextArea = document.createElement('textarea');
+        tempTextArea.value = hiddenText.textContent;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextArea);
+
+        copyText.textContent = "COPIED!";
+
+        setTimeout(function() {
+            if (copyText === copyText1) {
+                copyText.textContent = "W3";
+            } else if (copyText === copyText2) {
+                copyText.textContent = "GAMMA";
+            } else if (copyText === copyText3) {
+                copyText.textContent = "STATIC";
+            } else if (copyText === copyText4) {
+                copyText.textContent = "EMAIL4";
+            } else if (copyText === copyText5) {
+                copyText.textContent = "EMAIL5";
+            } else if (copyText === copyText6) {
+                copyText.textContent = "EMAIL6";
+            } else if (copyText === copyText7) {
+                copyText.textContent = "EMAIL7";
+            } else if (copyText === copyText8) {
+                copyText.textContent = "EMAIL8";
+            } else if (copyText === copyText9) {
+                copyText.textContent = "EMAIL9";
+            } else if (copyText === copyText10) {
+                copyText.textContent = "EMAIL10";
+            } else if (copyText === copyText11) {
+                copyText.textContent = "EMAIL11";
+            } else if (copyText === copyText12) {
+                copyText.textContent = "EMAIL12";
+            } else if (copyText === copyText13) {
+                copyText.textContent = "EMAIL13";
+            } else if (copyText === copyText14) {
+                copyText.textContent = "EMAIL14";
+            } else if (copyText === copyText15) {
+                copyText.textContent = "EMAIL15";
+            }
+        }, 2000);
+    }
+
+    copyText1.addEventListener('click', function () {
+        copyText(copyText1, hiddenText1);
+    });
+
+    copyText2.addEventListener('click', function () {
+        copyText(copyText2, hiddenText2);
+    });
+
+    copyText3.addEventListener('click', function () {
+        copyText(copyText3, hiddenText3);
+    });
+
+    copyText4.addEventListener('click', function () {
+        copyText(copyText4, hiddenText4);
+    });
+
+    copyText5.addEventListener('click', function () {
+        copyText(copyText5, hiddenText5);
+    });
+
+    copyText6.addEventListener('click', function () {
+        copyText(copyText6, hiddenText6);
+    });
+
+    copyText7.addEventListener('click', function () {
+        copyText(copyText7, hiddenText7);
+    });
+
+    copyText8.addEventListener('click', function () {
+        copyText(copyText8, hiddenText8);
+    });
+
+    copyText9.addEventListener('click', function () {
+        copyText(copyText9, hiddenText9);
+    });
+
+    copyText10.addEventListener('click', function () {
+        copyText(copyText10, hiddenText10);
+    });
+
+    copyText11.addEventListener('click', function () {
+        copyText(copyText11, hiddenText11);
+    });
+
+    copyText12.addEventListener('click', function () {
+        copyText(copyText12, hiddenText12);
+    });
+
+    copyText13.addEventListener('click', function () {
+        copyText(copyText13, hiddenText13);
+    });
+
+    copyText14.addEventListener('click', function () {
+        copyText(copyText14, hiddenText14);
+    });
+
+    copyText15.addEventListener('click', function () {
+        copyText(copyText15, hiddenText15);
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Decoder</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
+
+  <style>
+    body {
+      margin: 17px;
+    }
+    h3 {
+      margin-bottom: 37px;
+      text-align:center;
+      color: green;
+    }
+    #output {
+      margin-top: 25px;
+    }
+  </style>
+
+</head>
+<body>
+  <h3>QR CODE SCANNER</h3>
+  <input type="file" accept="image/*" id="fileInput">
+  <div id="output"></div>
+
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const imageData = event.target.result;
+        const img = document.createElement("img");
+        img.src = imageData;
+
+        img.onload = function() {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const code = jsQR(imageData.data, imageData.width, imageData.height);
+          if (code) {
+            document.getElementById('output').textContent = "QR Decoded: " + code.data;
+          } else {
+            document.getElementById('output').textContent = "No QR Code Found.";
+          }
+        };
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>

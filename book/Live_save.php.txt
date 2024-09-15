@@ -1,0 +1,11 @@
+<?php
+$text = $_POST['text'];
+
+$file = fopen('notes.txt', 'w');
+if ($file) {
+    fwrite($file, $text);
+    fclose($file);
+} else {
+    http_response_code(500);
+}
+?>

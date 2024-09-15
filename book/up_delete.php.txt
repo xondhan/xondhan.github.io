@@ -1,0 +1,10 @@
+<?php
+$fileToDelete = $_GET["name"];
+
+if (unlink($fileToDelete)) {
+    header("Location: " . $_SERVER["HTTP_REFERER"]);
+    exit();
+} else {
+    echo "Error";
+}
+?>

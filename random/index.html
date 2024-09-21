@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeneraTe Random</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h3 {
+            text-align: center;
+            color: green;
+        }
+
+        .input-container, #progress {
+            width: 50%; /* Center and limit the width */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        input[type="number"] {
+            flex-grow: 1;
+            padding: 10px;
+            box-sizing: border-box;
+            -moz-appearance: textfield;
+            margin-right: 10px; /* Space between input and label */
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .mb-label {
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: auto; /* Make button size smaller */
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #progress {
+            background-color: #ddd;
+            display: none;
+            height: 30px; /* Set a height for the progress bar container */
+        }
+
+        #progressBar {
+            width: 0%;
+            height: 100%; /* Fill the height of the container */
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h3>SIMPLEST RANDOM FILE MAKER</h3>
+    <div class="input-container">
+        <input type="number" id="fileSize" min="1" value="1" step="1" placeholder="File size">
+        <span class="mb-label">MB</span>
+    </div>
+    <button onclick="generateFile()">Save Now</button>
+    <div id="progress">
+        <div id="progressBar">0%</div>
+    </div>
+
+    <script>
+        function generateFile() {
+            const fileSizeMB = document.getElementById('fileSize').value;
+            const fileSize = fileSizeMB * 1024 * 1024; // Convert MB to bytes
+            
+            document.getElementById('progress').style.display = 'block';
+            
+            const worker = new Worker(URL.createObjectURL(new Blob([`
+                function xorshift32(a) {
+                    a ^= a << 13;
+                    a ^= a >>> 17;
+                    a ^= a << 5;
+                    return a >>> 0;
+                }
+
+                self.onmessage = function(e) {
+                    const fileSize = e.data.fileSize;
+                    const buffer = new ArrayBuffer(fileSize);
+                    const view = new Uint32Array(buffer);
+                    let seed = Date.now();
+                    let lastUpdate = Date.now();
+                    
+                    for (let i = 0; i < view.length; i++) {
+                        seed = xorshift32(seed);
+                        view[i] = seed;
+                        
+                        const now = Date.now();
+                        if (now - lastUpdate >= 1000) { // Update progress every 1 second
+                            self.postMessage({progress: Math.round((i * 4 / fileSize) * 100)});
+                            lastUpdate = now;
+                        }
+                    }
+                    
+                    self.postMessage({done: true, buffer: buffer});
+                };
+            `], {type: 'application/javascript'})));
+            
+            worker.onmessage = function(e) {
+                if (e.data.progress) {
+                    document.getElementById('progressBar').style.width = e.data.progress + '%';
+                    document.getElementById('progressBar').textContent = e.data.progress + '%';
+                } else if (e.data.done) {
+                    const blob = new Blob([e.data.buffer], {type: 'application/octet-stream'});
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'CreaTed.rndm';
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                    document.getElementById('progress').style.display = 'none';
+                }
+            };
+            
+            worker.postMessage({fileSize: fileSize});
+        }
+    </script>
+</body>
+</html>

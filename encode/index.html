@@ -1,59 +1,62 @@
 <!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RoT</title>
+    <title>RoT</title>
     
     <style type="text/css">
-		body {
-			background-color: white;
-			font-family: Sans-Serif;
-			text-align: center;
-			padding:2em;
-		}
-	</style>
-		</head>
-        <body>
-               <p><textarea class="a" cols="30" rows="10" id="srcText" oninput="decode()" spellcheck="false" placeholder="Origin"></textarea></p>
-
-	<textarea class="a" cols="30" rows="10" readonly id="resultText" spellcheck="false" placeholder="Loading"></textarea>
-        <div>
-        	<p><select class="a" id="decoder" onchange="decode();" style="min-width: 8em;"></p>
-                    <option value="rot18" selected>R18</option>
-                    <option value="rot3">R3</option>
-                </select>
-<script>
-    function decode() {
-        var srcText = document.getElementById('srcText').value;
-        var decoder = document.getElementById('decoder').value;
-        var alphabet1 = '';
-        var alphabet2 = '';
-
-        switch (decoder) {
-
-   case 'rot18':
-                alphabet1 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                alphabet2 = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm5678901234';
-                break;
-
-    case 'rot3':
-                alphabet1 = 'ABCDEFGHIJKMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-                alphabet2 = 'DEFGHIJKLMNPQRSTUVWXYZABCdefghijklmnopqrstuvwxyzabc';
-                break;
-    }
-        var result = '';
-        for (var i = 0; i < srcText.length; i++) {
-            var p = alphabet1.indexOf(srcText[i]);
-            if (p !== -1)
-                result += alphabet2[p];
-            else
-                result += srcText[i];
+        body {
+            background-color: white;
+            font-family: Sans-Serif;
+            text-align: center;
+            padding: 2em;
         }
+    </style>
+</head>
+<body>
+    <p><textarea class="a" cols="30" rows="10" id="srcText" oninput="decode()" spellcheck="false" placeholder="Origin"></textarea></p>
 
-        document.getElementById('resultText').value = result;
-    }
+    <textarea class="a" cols="30" rows="10" readonly id="resultText" spellcheck="false" placeholder="Loading"></textarea>
 
-</script>
+    <div>
+        <p><select class="a" id="decoder" onchange="decode();" style="min-width: 8em;">
+            <option value="rot18" selected>R18</option>
+            <option value="rot3">R3</option>
+        </select></p>
+    </div>
+
+    <script>
+        function decode() {
+            var srcText = document.getElementById('srcText').value;
+            var decoder = document.getElementById('decoder').value;
+            var alphabet1 = '';
+            var alphabet2 = '';
+
+            switch (decoder) {
+                case 'rot18':
+                    alphabet1 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                    alphabet2 = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm5678901234';
+                    break;
+
+                case 'rot3':
+                    alphabet1 = 'ABCDEFGHIJKMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                    alphabet2 = 'DEFGHIJKLMNPQRSTUVWXYZABCdefghijklmnopqrstuvwxyzabc';
+                    break;
+            }
+
+            var result = '';
+            for (var i = 0; i < srcText.length; i++) {
+                var p = alphabet1.indexOf(srcText[i]);
+                if (p !== -1)
+                    result += alphabet2[p];
+                else
+                    result += srcText[i];
+            }
+
+            document.getElementById('resultText').value = result;
+        }
+    </script>
 
 </body>
 </html>

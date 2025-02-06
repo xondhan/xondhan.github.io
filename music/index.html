@@ -15,9 +15,12 @@
             color: green;
             margin-bottom: 60px;
         }
-        .controls {
-            margin-top: 10px;
+        input {
             margin-bottom: 60px;
+        }
+        audio {
+            display: block;
+            margin: 0 auto 60px;
         }
         button {
             padding: 10px;
@@ -29,7 +32,6 @@
             cursor: pointer;
             font-size: 18px;
             transition: background 0.3s ease;
-            margin-bottom: 60px;
         }
         button.active {
             background: skyblue;
@@ -41,11 +43,9 @@
 
     <div class="player">
         <h3>SIMPLEST MP3 PLAYER</h3>
-
         <input type="file" id="fileInput" accept="audio/mp3">
-        <br><br>
         <audio id="audioPlayer" controls></audio>
-        <div class="controls">
+        <div>
             <button id="playPause">▶️</button>
             <button id="repeat">🔁</button>
         </div>
@@ -60,8 +60,7 @@
         fileInput.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
-                const objectURL = URL.createObjectURL(file);
-                audioPlayer.src = objectURL;
+                audioPlayer.src = URL.createObjectURL(file);
                 playPauseBtn.textContent = '▶️';
                 playPauseBtn.classList.remove('active');
             }

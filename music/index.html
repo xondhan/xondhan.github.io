@@ -13,18 +13,16 @@
         }
         h3 {
             color: green;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
-        input {
-            margin-bottom: 60px;
-        }
-        audio {
-            display: block;
-            margin: 0 auto 60px;
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         button {
-            padding: 10px;
-            margin: 5px;
+            padding: 10px 20px;
             border: none;
             background: #e8e8e8;
             color: black;
@@ -32,6 +30,7 @@
             cursor: pointer;
             font-size: 18px;
             transition: background 0.3s ease;
+            width: 120px;
         }
         button.active {
             background: skyblue;
@@ -41,46 +40,42 @@
 </head>
 <body>
 
-    <div class="player">
-        <h3>SIMPLEST MP3 PLAYER</h3>
-        <input type="file" id="fileInput" accept="audio/mp3">
-        <audio id="audioPlayer" controls></audio>
-        <div>
-            <button id="playPause">▶️</button>
-            <button id="repeat">🔁</button>
-        </div>
+    <h3>SIMPLE MP3 PLAYER</h3>
+
+    <div class="container">
+        <button class="play-btn" data-src="http://zyad.zya.me/audio/Advice.mp3">Advice</button>
+        <button class="play-btn" data-src="http://zyad.zya.me/audio/Dumb.mp3">Dumb</button>
+        <button class="play-btn" data-src="http://zyad.zya.me/audio/Go.mp3">Go</button>
+        <button class="play-btn" data-src="http://zyad.zya.me/audio/Good.mp3">Good</button>
+        <button class="play-btn" data-src="http://zyad.zya.me/audio/Rules.mp3">Rules</button>
+        <button class="play-btn" data-src="http://zyad.zya.me/audio/Success.mp3">Success</button>
     </div>
 
+    <audio id="audioPlayer" loop></audio>
+
     <script>
-        const fileInput = document.getElementById('fileInput');
+        const buttons = document.querySelectorAll('.play-btn');
         const audioPlayer = document.getElementById('audioPlayer');
-        const playPauseBtn = document.getElementById('playPause');
-        const repeatBtn = document.getElementById('repeat');
 
-        fileInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                audioPlayer.src = URL.createObjectURL(file);
-                playPauseBtn.textContent = '▶️';
-                playPauseBtn.classList.remove('active');
-            }
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                if (audioPlayer.src !== this.getAttribute('data-src') || audioPlayer.paused) {
+                    audioPlayer.src = this.getAttribute('data-src');
+                    audioPlayer.play();
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                } else {
+                    audioPlayer.pause();
+                    this.classList.remove('active');
+                }
+            });
         });
 
-        playPauseBtn.addEventListener('click', function() {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                this.textContent = '⏸️';
-                this.classList.add('active');
-            } else {
-                audioPlayer.pause();
-                this.textContent = '▶️';
-                this.classList.remove('active');
+        audioPlayer.addEventListener('ended', function() {
+            const activeButton = document.querySelector('.play-btn.active');
+            if (activeButton) {
+                audioPlayer.play(); 
             }
-        });
-
-        repeatBtn.addEventListener('click', function() {
-            audioPlayer.loop = !audioPlayer.loop;
-            this.classList.toggle('active', audioPlayer.loop);
         });
     </script>
 

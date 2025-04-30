@@ -1,170 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeneraTe Random</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generate Random</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-        h3 {
-            text-align: center;
-            color: green;
-        }
+    h3 {
+      text-align: center;
+      color: green;
+    }
 
-        .input-container, #progress {
-            width: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-        }
+    .input-container {
+      width: 45%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+    }
 
-        input[type="number"] {
-            flex-grow: 1;
-            padding: 10px;
-            box-sizing: border-box;
-            -moz-appearance: textfield;
-            margin-right: 10px;
-        }
+    input[type="text"] {
+      flex-grow: 1;
+      padding: 10px;
+      margin-right: 10px;
+      font-size: 16px;
+    }
 
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+    .mb-label {
+      font-size: 16px;
+    }
 
-        .mb-label {
-            font-size: 16px;
-        }
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
 
-        button {
-            margin-top: 10px;
-            padding: 8px 15px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-        }
+    button:hover {
+      background-color: #45a049;
+    }
 
-        button:hover {
-            background-color: #45a049;
-        }
+    #progress {
+      width: 50%;
+      background-color: #ddd;
+      display: none;
+      height: 30px;
+      border-radius: 13px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
 
-        #progress {
-            background-color: #ddd;
-            display: none;
-            height: 30px;
-        }
-
-        #progressBar {
-            width: 0%;
-            height: 100%;
-            background-color: #4CAF50;
-            text-align: center;
-            line-height: 30px;
-            color: white;
-        }
-    </style>
+    #progressBar {
+      height: 100%;
+      width: 0%;
+      background-color: #4CAF50;
+      transition: width 0.4s ease-in-out;
+    }
+  </style>
 </head>
 <body>
-    <h3>SIMPLEST RANDOM FILE MAKER</h3>
-    <div class="input-container">
-        <input type="number" id="fileSize" min="1" value="1" step="1" placeholder="File size">
-        <span class="mb-label">MB</span>
-    </div>
-    <button onclick="generateFile()">Save Now</button>
-    <div id="progress">
-        <div id="progressBar">0%</div>
-    </div>
+  <h3>RANDOM FILE MAKER</h3>
 
-    <script>
-        function generateFile() {
-            const fileSizeMB = parseInt(document.getElementById('fileSize').value, 10);
-            const MAX_FILE_SIZE_MB = 17 * 1024;
-            const chunkSize = 10 * 1024 * 1024;
-            const totalChunks = Math.ceil(fileSizeMB / (chunkSize / (1024 * 1024)));
-            const chunks = [];
-            let currentChunk = 0;
+  <div class="input-container">
+    <input type="text" id="fileSize" inputmode="decimal" placeholder="">
+    <span class="mb-label">MB</span>
+  </div>
 
-            if (fileSizeMB > MAX_FILE_SIZE_MB) {
-                alert("We can make Max 17GB only!");
-                return;
-            }
+  <button onclick="generateFile()">Save Now</button>
 
-            document.getElementById('progress').style.display = 'block';
+  <div id="progress">
+    <div id="progressBar"></div>
+  </div>
 
-            const worker = new Worker(URL.createObjectURL(new Blob([`
-                function xorshift32(a) {
-                    a ^= a << 13;
-                    a ^= a >>> 17;
-                    a ^= a << 5;
-                    return a >>> 0;
-                }
+  <script>
+    function generateFile() {
+      const fileSizeMB = parseFloat(document.getElementById("fileSize").value.trim());
+      const MAX_MB = 17 * 1024;
 
-                self.onmessage = function(e) {
-                    const chunkSize = e.data.chunkSize;
-                    const totalChunks = e.data.totalChunks;
-                    const currentChunk = e.data.currentChunk;
-                    
-                    const buffer = new ArrayBuffer(chunkSize);
-                    const view = new Uint32Array(buffer);
-                    let seed = Date.now();
+      if (isNaN(fileSizeMB) || fileSizeMB <= 0) {
+        alert("Enter a valid number greater than 0.");
+        return;
+      }
 
-                    for (let i = 0; i < view.length; i++) {
-                        seed = xorshift32(seed);
-                        view[i] = seed;
-                    }
+      if (fileSizeMB > MAX_MB) {
+        alert("We can make Max 17GB only!");
+        return;
+      }
 
-                    self.postMessage({
-                        progress: Math.round((currentChunk / totalChunks) * 100),
-                        buffer: buffer
-                    });
-                };
-            `], { type: 'application/javascript' })));
+      const chunkSize = 1024 * 1024;
+      const totalBytes = Math.floor(fileSizeMB * chunkSize);
+      const totalChunks = Math.ceil(totalBytes / chunkSize);
+      let currentChunk = 0;
+      const chunks = [];
 
-            worker.onmessage = function (e) {
-                if (e.data.progress) {
-                    document.getElementById('progressBar').style.width = e.data.progress + '%';
-                    document.getElementById('progressBar').textContent = e.data.progress + '%';
-                }
+      const progress = document.getElementById("progress");
+      const progressBar = document.getElementById("progressBar");
+      progress.style.display = "block";
+      progressBar.style.width = "0%";
 
-                if (e.data.buffer) {
-                    const chunkBlob = new Blob([e.data.buffer], { type: 'application/octet-stream' });
-                    chunks.push(chunkBlob);
-                    currentChunk++;
+      const worker = new Worker(URL.createObjectURL(new Blob([`
+        self.onmessage = function(e) {
+          const { chunkSize, currentChunk, totalChunks } = e.data;
+          let result = '';
+          for (let i = 0; i < chunkSize; i++) {
+            result += Math.floor(Math.random() * 10);
+          }
+          const encoder = new TextEncoder();
+          const buffer = encoder.encode(result).buffer;
+          self.postMessage({
+            buffer: buffer,
+            progress: Math.round((currentChunk / totalChunks) * 100)
+          });
+        };
+      `], { type: "application/javascript" })));
 
-                    if (currentChunk < totalChunks) {
-                        worker.postMessage({
-                            chunkSize: chunkSize,
-                            totalChunks: totalChunks,
-                            currentChunk: currentChunk
-                        });
-                    } else {
-                        const finalBlob = new Blob(chunks, { type: 'application/octet-stream' });
-                        const link = document.createElement('a');
-                        link.href = URL.createObjectURL(finalBlob);
-                        link.download = 'GeneratedFile.rndm';
-                        link.click();
-                        URL.revokeObjectURL(link.href);
-                        document.getElementById('progress').style.display = 'none';
-                    }
-                }
-            };
+      worker.onmessage = function (e) {
+        if (e.data.buffer) {
+          chunks.push(new Blob([e.data.buffer], { type: "application/octet-stream" }));
+          currentChunk++;
+          progressBar.style.width = Math.min(100, Math.round((currentChunk / totalChunks) * 100)) + "%";
 
-            worker.postMessage({
-                chunkSize: chunkSize,
-                totalChunks: totalChunks,
-                currentChunk: currentChunk
-            });
+          if (currentChunk < totalChunks) {
+            worker.postMessage({ chunkSize, totalChunks, currentChunk });
+          } else {
+            const finalBlob = new Blob(chunks, { type: "application/octet-stream" });
+            const url = URL.createObjectURL(finalBlob);
+            const safeName = `${fileSizeMB}.mb`;
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = safeName;
+            link.click();
+            URL.revokeObjectURL(url);
+            progress.style.display = "none";
+          }
         }
-    </script>
+      };
+
+      worker.postMessage({ chunkSize, totalChunks, currentChunk });
+    }
+  </script>
 </body>
 </html>

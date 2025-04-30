@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR & Barcode Scanner</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Scan</title>
   <script src="https://cdn.jsdelivr.net/npm/jsqr"></script>
   <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.5/umd/index.min.js"></script>
   <style>
@@ -12,13 +12,14 @@
       font-family: Arial, sans-serif;
     }
     h3 {
-      text-align:center;
+      text-align: center;
       color: #4CAF50;
     }
     #output {
       margin-top: 25px;
       font-size: 16px;
       color: #555;
+      text-align: center;
     }
     input[type="file"] {
       display: block;
@@ -27,24 +28,26 @@
   </style>
 </head>
 <body>
-  <h3>QR & Barcode SCANNER</h3>
-  <input type="file" accept="image/*" id="fileInput">
+  <h3>QR SCANNER</h3>
+  <input type="file" accept="image/*" id="fileInput" />
   <div id="output"></div>
 
   <script>
     const fileInput = document.getElementById('fileInput');
     const output = document.getElementById('output');
 
-    fileInput.addEventListener('change', function(event) {
+    fileInput.addEventListener('change', function (event) {
       const file = event.target.files[0];
       if (!file) return;
 
+      output.textContent = "Analyzing image...";
+
       const reader = new FileReader();
-      reader.onload = function(event) {
+      reader.onload = function (event) {
         const img = new Image();
         img.src = event.target.result;
-        img.onload = function() {
-          processImage(img);
+        img.onload = function () {
+          setTimeout(() => processImage(img), 1000); // Add a 1-second delay
         };
       };
       reader.readAsDataURL(file);
